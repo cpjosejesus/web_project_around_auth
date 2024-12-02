@@ -1,0 +1,14 @@
+.footer {
+  max-width: 880px;
+  margin: 0 auto;
+  margin-top: 67px;
+  padding-left: 2rem;
+}
+
+.footer__text {
+  color: #545454;
+  margin: 0;
+  padding-bottom: 60px;
+  font-size: 14px;
+  font-family: Inter;
+}

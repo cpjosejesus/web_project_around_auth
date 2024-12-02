@@ -1,0 +1,96 @@
+.elements {
+  display: flex;
+  margin: 0 auto;
+  max-width: 882px;
+  flex-wrap: wrap;
+  column-gap: 18px;
+  row-gap: 20px;
+  justify-content: center;
+}
+
+.element {
+  height: 361px;
+  border-radius: 0.62em;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.element__image {
+  width: 282px;
+  height: 282px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  background-color: #000;
+}
+
+.element__info {
+  display: flex;
+  align-items: center;
+  margin: auto;
+}
+
+.element__title {
+  color: #000;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 900;
+  margin: 0;
+  font-family: "Inter Black";
+  width: 238px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.element__likes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.element__button-like {
+  width: 21px;
+  height: 19px;
+  border: none;
+  background: url(../images/like.svg) no-repeat center;
+  cursor: pointer;
+}
+
+.element__like-number {
+  color: black;
+}
+
+.element__button-like:hover {
+  opacity: 0.5;
+}
+
+.element__button-like_black {
+  background: url(../images/like-black.svg) no-repeat center;
+  width: 21px;
+  height: 19px;
+  border: none;
+  cursor: pointer;
+}
+
+.element__button-delete {
+  width: 18px;
+  height: 19.3px;
+  border: none;
+  background: url(../images/Trash.svg) no-repeat center;
+  cursor: pointer;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+}
+
+.element__button-delete_hidden {
+  display: none;
+}
+
+.element__button-delete:hover {
+  opacity: 0.6;
+}
