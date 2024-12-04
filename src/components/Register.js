@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import * as auth from "../utils/auth";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Register(props) {
   const [user, setUser] = useState({
@@ -8,19 +7,30 @@ function Register(props) {
     password: "",
   });
 
-  const history = useNavigate();
-  const form = useRef();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.handleRegistration(user);
+  };
 
   return (
     <section className="auth">
-      <h2 className="auth__title">Entrar</h2>
-      <form className="auth__form">
+      <h2 className="auth__title">Registrate</h2>
+      <form className="auth__form" onSubmit={handleSubmit}>
         <input
           type="email"
           name="email"
           id="email"
-          placeholder="E-mail"
+          placeholder="Correo electronico"
           value={user.email}
+          onChange={handleChange}
           className="auth__input"
           required
         />
@@ -29,16 +39,17 @@ function Register(props) {
           type="password"
           name="password"
           id="password"
-          placeholder="123qwea"
+          placeholder="Contrasena"
           value={user.password}
+          onChange={handleChange}
           className="auth__input"
           required
         />
-        <button className="auth__button">Entrar</button>
+        <button className="auth__button">Registrate</button>
         <span className="auth__text">
-          Aun no eres miembro?{" "}
-          <Link to="/register" className="auth__link">
-            Inscribite aqui
+          Ya eres miembro?{" "}
+          <Link to="/login" className="auth__link">
+            Inicia sesion aqui
           </Link>
         </span>
       </form>

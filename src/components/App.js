@@ -1,18 +1,20 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import Main from "./Main";
-import PopupWithForm from "./PopupWithForm";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import AddPlacePopup from "./AddPlacePopup.js";
 import Login from "./Login.js";
 import Register from "./Register.js";
+import ProtectedRoute from "./ProtectedRoute.js";
 
 import React, { useState, useEffect } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 
 import api from "../utils/api";
+import * as auth from "../utils/auth.js";
+import { setToken, getToken, removeToken } from "../utils/token";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -24,12 +26,60 @@ function App() {
   const [cards, setCards] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState({ email: "" });
+  const navigate = useNavigate();
+
+  const handleRegistration = ({ email, password }) => {
+    if (password) {
+      auth
+        .register(email, password)
+        .then(() => {
+          navigate("/login");
+        })
+        .catch(console.error);
+    }
+  };
+
+  const handleLogin = ({ email, password }) => {
+    if (!email || !password) return;
+    auth
+      .authorize(email, password)
+      .then((data) => {
+        if (data.token) {
+          setToken(data.token);
+          setUserEmail(email);
+          setLoggedIn(true);
+          navigate("/");
+        }
+      })
+      .catch(console.error);
+  };
+
+  const handleLogout = () => {
+    removeToken();
+    setLoggedIn(false);
+  };
 
   useEffect(() => {
     api.getUserInfo().then((res) => {
       setCurrentUser(res);
     });
   }, []);
+
+  // useEffect(() => {
+  //   const jwt = getToken();
+  //   if (!jwt) return;
+
+  //   auth.checkToken(jwt).then((data) => {
+  //     if (data) {
+  //       setUserEmail({ email: data.email });
+  //       setLoggedIn(true);
+  //       navigate("/");
+  //     } else {
+  //       navigate("/signup");
+  //     }
+  //   });
+  // }, [loggedIn, navigate]);
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
@@ -117,25 +167,32 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header loggedIn={loggedIn} userEmail={userEmail.email} onLogout={handleLogout} />
         <main>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login handleLogin={handleLogin} />} />
             <Route
-              exact
+              path="/register"
+              element={<Register handleRegistration={handleRegistration} />}
+            />
+            <Route
               path="/"
               element={
-                <Main
-                  onEditAvatarClick={handleEditAvatarClick}
-                  onEditProfileClick={handleEditProfileClick}
-                  onAddPlaceClick={handleAddPlaceClick}
-                  onCardClick={handleCardClick}
-                  selectedCard={selectedCard}
-                  onClose={closeAllPopups}
-                  cards={cards}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelete}
+                <ProtectedRoute
+                  loggedIn={loggedIn}
+                  element={
+                    <Main
+                      onEditAvatarClick={handleEditAvatarClick}
+                      onEditProfileClick={handleEditProfileClick}
+                      onAddPlaceClick={handleAddPlaceClick}
+                      onCardClick={handleCardClick}
+                      selectedCard={selectedCard}
+                      onClose={closeAllPopups}
+                      cards={cards}
+                      onCardLike={handleCardLike}
+                      onCardDelete={handleCardDelete}
+                    />
+                  }
                 />
               }
             />

@@ -13,6 +13,33 @@
   margin-top: 41px;
 }
 
+.header__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  gap: 16px;
+}
+
+.header__btn-logout {
+  background-color: transparent;
+  padding: 4px;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.header__btn-logout:hover {
+  opacity: 0.8;
+}
+
+.header__link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: normal;
+}
+
 @media screen and (max-width: 880px) {
 }
 
