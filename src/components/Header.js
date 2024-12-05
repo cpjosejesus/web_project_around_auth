@@ -17,7 +17,7 @@ function Header(props) {
         <div className="header__profile">
           {props.loggedIn ? (
             <>
-              <span>{props.userEmail || "Email not available"}</span>
+              <span className="header__email">{props.userEmail}</span>
               <button className="header__btn-logout" onClick={handleLogout}>
                 Cerrar sesion
               </button>

@@ -26,7 +26,11 @@ function App() {
   const [cards, setCards] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState({ email: "" });
+  const [userEmail, setUserEmail] = useState("");
+
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const navigate = useNavigate();
 
   const handleRegistration = ({ email, password }) => {
@@ -34,9 +38,17 @@ function App() {
       auth
         .register(email, password)
         .then(() => {
+          setSuccess(true);
+          setIsTooltipOpen(true);
           navigate("/login");
         })
-        .catch(console.error);
+        .catch((error) => {
+          console.log(error);
+          setSuccess(false);
+          console.log("F");
+
+          setIsTooltipOpen(true);
+        });
     }
   };
 
@@ -46,18 +58,24 @@ function App() {
       .authorize(email, password)
       .then((data) => {
         if (data.token) {
-          setToken(data.token);
           setUserEmail(email);
+          setToken(data.token);
           setLoggedIn(true);
+          setSuccess(true);
           navigate("/");
         }
       })
-      .catch(console.error);
+      .catch((error) => {
+        setSuccess(false);
+        setIsTooltipOpen(true);
+        console.log(error);
+      });
   };
 
   const handleLogout = () => {
     removeToken();
     setLoggedIn(false);
+    setSuccess(false);
   };
 
   useEffect(() => {
@@ -66,20 +84,27 @@ function App() {
     });
   }, []);
 
-  // useEffect(() => {
-  //   const jwt = getToken();
-  //   if (!jwt) return;
+  useEffect(() => {
+    const jwt = getToken();
+    if (!jwt) return;
 
-  //   auth.checkToken(jwt).then((data) => {
-  //     if (data) {
-  //       setUserEmail({ email: data.email });
-  //       setLoggedIn(true);
-  //       navigate("/");
-  //     } else {
-  //       navigate("/signup");
-  //     }
-  //   });
-  // }, [loggedIn, navigate]);
+    auth
+      .checkToken(jwt)
+      .then((response) => {
+        if (response.data) {
+          const { email } = response.data;
+          setUserEmail(email);
+          setLoggedIn(true);
+          navigate("/");
+        } else {
+          navigate("/signup");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        navigate("/login");
+      });
+  }, [navigate]);
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
@@ -101,7 +126,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-
+    setIsTooltipOpen(false);
     setSelectedCard(null);
   };
 
@@ -167,13 +192,30 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header loggedIn={loggedIn} userEmail={userEmail.email} onLogout={handleLogout} />
+        <Header loggedIn={loggedIn} userEmail={userEmail} onLogout={handleLogout} />
         <main>
           <Routes>
-            <Route path="/login" element={<Login handleLogin={handleLogin} />} />
+            <Route
+              path="/login"
+              element={
+                <Login
+                  handleLogin={handleLogin}
+                  success={success}
+                  isOpen={isTooltipOpen}
+                  onClose={closeAllPopups}
+                />
+              }
+            />
             <Route
               path="/register"
-              element={<Register handleRegistration={handleRegistration} />}
+              element={
+                <Register
+                  handleRegistration={handleRegistration}
+                  success={success}
+                  isOpen={isTooltipOpen}
+                  onClose={closeAllPopups}
+                />
+              }
             />
             <Route
               path="/"

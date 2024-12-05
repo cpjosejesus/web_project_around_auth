@@ -40,6 +40,10 @@
   font-weight: normal;
 }
 
+.header__email {
+  margin-right: 16px;
+}
+
 @media screen and (max-width: 880px) {
 }
 
