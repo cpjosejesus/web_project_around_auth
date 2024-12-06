@@ -1,10 +1,9 @@
-import api from "../utils/api";
-import Card from "./Card";
-import { useState, useEffect, useContext } from "react";
-import ImagePopup from "./ImagePopup";
+import Card from "./Card.jsx";
+import { useContext } from "react";
+import ImagePopup from "./ImagePopup.jsx";
 import editBtn from "../images/edit-btn.svg";
 
-import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.jsx";
 
 function Main(props) {
   const currentUser = useContext(CurrentUserContext);

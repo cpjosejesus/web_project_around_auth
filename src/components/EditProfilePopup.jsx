@@ -16,9 +16,7 @@ function EditProfilePopup(props) {
   }
 
   function handleSubmit(e) {
-    // Evita que el navegador navegue hacia la dirección del formulario
     e.preventDefault();
-    // Pasa los valores de los componentes gestionados al controlador externo
     props.onUpdateUser({
       name: name,
       about: description,
@@ -48,9 +46,14 @@ function EditProfilePopup(props) {
           required
           minLength="2"
           maxLength="40"
+          value={name || ""}
           onChange={handleNameChange}
         />
-        <span className="name-error popup__error"></span>
+        {!name && (
+          <span className="name-error popup__error_visible">
+            El nombre no puede estar vacio
+          </span>
+        )}
 
         <input
           type="text"
@@ -61,9 +64,14 @@ function EditProfilePopup(props) {
           required
           minLength="2"
           maxLength="200"
+          value={description || ""}
           onChange={handleDescriptionChange}
         />
-        <span className="type-error popup__error"></span>
+        {!description && (
+          <span className="type-error popup__error_visible">
+            La descripcion no puede estar vacia
+          </span>
+        )}
 
         <button type="submit" className="popup__button popup__button-save">
           Guardar

@@ -1,20 +1,20 @@
-import Header from "./Header";
-import Footer from "./Footer";
-import Main from "./Main";
-import EditProfilePopup from "./EditProfilePopup.js";
-import EditAvatarPopup from "./EditAvatarPopup.js";
-import AddPlacePopup from "./AddPlacePopup.js";
-import Login from "./Login.js";
-import Register from "./Register.js";
-import ProtectedRoute from "./ProtectedRoute.js";
+import Header from "./Header.jsx";
+import Footer from "./Footer.jsx";
+import Main from "./Main.jsx";
+import EditProfilePopup from "./EditProfilePopup.jsx";
+import EditAvatarPopup from "./EditAvatarPopup.jsx";
+import AddPlacePopup from "./AddPlacePopup.jsx";
+import Login from "./Login.jsx";
+import Register from "./Register.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 import React, { useState, useEffect } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.jsx";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 
-import api from "../utils/api";
+import api from "../utils/api.js";
 import * as auth from "../utils/auth.js";
-import { setToken, getToken, removeToken } from "../utils/token";
+import { setToken, getToken, removeToken } from "../utils/token.js";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -43,10 +43,7 @@ function App() {
           navigate("/login");
         })
         .catch((error) => {
-          console.log(error);
           setSuccess(false);
-          console.log("F");
-
           setIsTooltipOpen(true);
         });
     }
@@ -68,7 +65,6 @@ function App() {
       .catch((error) => {
         setSuccess(false);
         setIsTooltipOpen(true);
-        console.log(error);
       });
   };
 
@@ -137,9 +133,7 @@ function App() {
         setCurrentUser(data);
         closeAllPopups();
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const handleUpdateAvatar = (data) => {
@@ -149,9 +143,7 @@ function App() {
         setCurrentUser(updatedAvatar);
         closeAllPopups();
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -184,15 +176,17 @@ function App() {
         setCards([card, ...cards]);
         closeAllPopups();
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header loggedIn={loggedIn} userEmail={userEmail} onLogout={handleLogout} />
+        <Header
+          loggedIn={loggedIn}
+          userEmail={userEmail}
+          onLogout={handleLogout}
+        />
         <main>
           <Routes>
             <Route

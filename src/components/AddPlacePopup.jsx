@@ -4,9 +4,13 @@ import PopupWithForm from "./PopupWithForm";
 function AddPlacePopup(props) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
+  const [showError, setShowError] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!name) {
+      return;
+    }
     props.onAddPlace({
       name,
       link,
@@ -15,6 +19,11 @@ function AddPlacePopup(props) {
 
   function handleNameChange(e) {
     setName(e.target.value);
+    if (name.length >= 5) {
+      setShowError(false);
+    } else {
+      setShowError(true);
+    }
   }
 
   function handleLinkChange(e) {
@@ -37,11 +46,17 @@ function AddPlacePopup(props) {
           name="title"
           placeholder="Titulo"
           required
-          minLength="2"
+          minLength="5"
           maxLength="30"
           onChange={handleNameChange}
         />
-        <span className="title-error popup__error"></span>
+        <span
+          className={`title-error popup__error ${
+            showError ? "popup__error_visible" : ""
+          }`}
+        >
+          El titulo tiene que tener una longitud minima de 5 caracteres
+        </span>
 
         <input
           type="url"
@@ -56,7 +71,9 @@ function AddPlacePopup(props) {
 
         <button
           type="submit"
-          className="popup__button-save popup__button-create"
+          className={`popup__button-save popup__button-create ${
+            name.length === 0 || showError ? "popup__button_disabled" : ""
+          }`}
         >
           Crear
         </button>

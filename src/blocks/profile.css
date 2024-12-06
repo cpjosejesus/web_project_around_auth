@@ -55,7 +55,7 @@
 
 .profile__name {
   margin: 0;
-  font-family: "Inter Black";
+  font-family: "Inter Black" sans-serif;
   max-width: 373px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -64,7 +64,7 @@
 
 .profile__type {
   margin: 0;
-  font-family: "Inter";
+  font-family: "Inter" sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

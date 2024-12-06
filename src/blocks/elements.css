@@ -39,7 +39,7 @@
   font-style: normal;
   font-weight: 900;
   margin: 0;
-  font-family: "Inter Black";
+  font-family: "Inter Black" sans-serif;
   width: 238px;
   text-overflow: ellipsis;
   white-space: nowrap;

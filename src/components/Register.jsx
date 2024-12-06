@@ -56,7 +56,11 @@ function Register(props) {
           </span>
         </form>
       </section>
-      <InfoTooltip success={props.success} isOpen={props.isOpen} onClose={props.onClose} />
+      <InfoTooltip
+        success={props.success}
+        isOpen={props.isOpen}
+        onClose={props.onClose}
+      />
     </>
   );
 }
